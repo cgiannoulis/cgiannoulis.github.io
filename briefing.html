@@ -5,18 +5,19 @@
 <title>Tennessee growth and achievement</title>
 <style>
 body{font-family:Georgia,serif;background:#f3efe4;color:#1c1915;max-width:40rem;margin:3rem auto;padding:0 1rem}
-p,button{font-family:Calibri,sans-serif}
-button{margin-top:1.5rem;background:#1b3a4b;color:#f3efe4;border:0;padding:.8rem 1.2rem;font-size:1rem;cursor:pointer}
+p,button{font-family:Calibri,sans-serif;line-height:1.45}
+button{margin-top:1.2rem;background:#1b3a4b;color:#f3efe4;border:0;padding:.85rem 1.2rem;font-size:1.05rem;cursor:pointer}
 .muted{color:#5c564c}
 </style>
 </head>
 <body>
 <h1>Tennessee growth and achievement</h1>
-<p class="muted">Ten-minute briefing for a legislator. Speaker notes are inside the PowerPoint, under each slide. Open the file in PowerPoint or Google Slides and use View, Notes.</p>
+<p class="muted">Ten-minute briefing. Click the button. Your browser saves a PowerPoint named Tennessee-growth-and-achievement.pptx. Open it in PowerPoint. The speaker script is in the notes under each slide (View, then Notes).</p>
 <p><button id="dl" type="button">Download the PowerPoint</button></p>
 <p id="status" class="muted">Ready.</p>
 <script>
 const N = 24;
+const fixes = {17: [[1484, "Y"]], 19: [[1412, "Y"]]};
 document.getElementById("dl").onclick = async function () {
   const status = document.getElementById("status");
   const btn = document.getElementById("dl");
@@ -26,22 +27,32 @@ document.getElementById("dl").onclick = async function () {
     for (let i = 0; i < N; i++) {
       const name = "p" + String(i).padStart(2, "0") + ".txt";
       status.textContent = "Fetching part " + (i + 1) + " of " + N + "...";
-      const res = await fetch("briefing/" + name + "?v=1");
+      const res = await fetch("briefing/" + name + "?v=3");
       if (!res.ok) throw new Error(name + " " + res.status);
-      b64 += (await res.text()).trim();
+      let part = (await res.text()).trim();
+      const patch = fixes[i];
+      if (patch) {
+        for (const pair of patch) {
+          const idx = pair[0];
+          const ch = pair[1];
+          part = part.slice(0, idx) + ch + part.slice(idx + 1);
+        }
+      }
+      b64 += part;
     }
     const bin = atob(b64);
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    if (bytes[0] !== 0x50 || bytes[1] !== 0x4b) throw new Error("file did not build");
     const blob = new Blob([bytes], {type: "application/vnd.openxmlformats-officedocument.presentationml.presentation"});
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "Tennessee-growth-and-achievement.pptx";
     document.body.appendChild(a);
     a.click();
-    status.textContent = "Download started. Open Tennessee-growth-and-achievement.pptx.";
+    status.textContent = "Download started. Open Tennessee-growth-and-achievement.pptx. Ten slides, notes under each one.";
   } catch (err) {
-    status.textContent = "Could not build the file yet: " + err.message + ". Wait a minute and try again.";
+    status.textContent = "Could not build the file: " + err.message + ". Refresh the page and try again.";
   }
   btn.disabled = false;
 };
