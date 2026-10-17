@@ -1,1 +1,416 @@
-PLACEHOLDER_WILL_FAIL
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two answers — Tennessee growth and achievement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f3efe4; --ink: #1c1915; --muted: #5c564c; --line: #ddd4c6;
+    --navy: #1b3a4b; --sea: #1f6b45; --sand: #e7e0d4;
+    --l1: #8d3b32; --l2: #a86b45; --l3: #8a8175; --l4: #3d7a5c; --l5: #1f6b45;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); }
+  body { font-family: "Source Sans 3", "Segoe UI", sans-serif; font-size: 17px; line-height: 1.45; }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  .app { min-height: 100%; display: flex; flex-direction: column; }
+  main { flex: 1; width: min(980px, 100%); margin: 0 auto; padding: 28px 28px 12px; }
+  .kicker { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--navy); }
+  h1, h2, .serif { font-family: "Source Serif 4", Georgia, serif; font-weight: 500; }
+  h1 { margin: 14px 0 0; font-size: clamp(34px, 5vw, 48px); line-height: 1.12; max-width: 18ch; }
+  h2 { margin: 8px 0 0; font-size: clamp(28px, 4vw, 36px); line-height: 1.15; }
+  .lede { margin: 22px 0 0; max-width: 38rem; font-size: 18px; color: var(--muted); }
+  .embargo { margin: 28px 0 0; max-width: 38rem; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  .grid2 { display: grid; gap: 14px; margin-top: 28px; }
+  @media (min-width: 700px) { .grid2 { grid-template-columns: 1fr 1fr; } .grid3 { grid-template-columns: 1fr 1fr 1fr; } }
+  .card { border: 1px solid var(--line); padding: 22px; }
+  .card.sand { background: var(--sand); }
+  .card h3 { margin: 0; font-size: 28px; }
+  .card p { margin: 10px 0 0; font-size: 18px; color: var(--muted); }
+  .sentence { margin: 26px 0 0; max-width: 40rem; font-size: 18px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 4px 0 0; padding: 0; list-style: none; font-size: 14px; }
+  .legend .r { color: var(--navy); } .legend .m { color: var(--sea); }
+  .facts { display: grid; gap: 14px; margin-top: 18px; }
+  .fact { border-top: 1px solid var(--line); padding-top: 8px; }
+  .num { font-family: "Source Serif 4", Georgia, serif; font-size: 48px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .num.lg { font-size: 64px; }
+  .fact span, .place span { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; }
+  .caption { margin: 14px 0 0; max-width: 42rem; font-size: 14px; color: var(--muted); }
+  .places { display: grid; gap: 18px; margin-top: 26px; }
+  .place { border-top: 2px solid var(--navy); padding-top: 10px; }
+  .split { display: grid; gap: 14px; margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); }
+  .split p { margin: 0; font-size: 18px; }
+  ol.uses { list-style: none; margin: 26px 0 0; padding: 0; }
+  ol.uses li { display: grid; grid-template-columns: 2.4rem 1fr; gap: 8px; margin: 0 0 16px; }
+  ol.uses .n { font-family: "Source Serif 4", Georgia, serif; font-size: 28px; color: var(--navy); line-height: 1; }
+  .muted { color: var(--muted); }
+  .hide { display: none; }
+  .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .row button, .row select, .row input {
+    min-height: 40px; border: 1px solid var(--line); background: var(--paper); padding: 0 10px; border-radius: 2px;
+  }
+  .row button.on, .row select.on { background: var(--navy); color: var(--paper); border-color: var(--navy); }
+  .row input { width: 180px; }
+  .row .spacer { margin-left: auto; }
+  .callout { margin: 8px 0 0; background: var(--sand); border: 1px solid var(--line); padding: 8px 12px; font-size: 14px; }
+  svg.chart { width: 100%; height: auto; display: block; }
+  .plotwrap { margin-top: 6px; }
+  .footkey { font-size: 14px; color: var(--muted); margin: 8px 0 0; }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+  footer.bar {
+    position: sticky; bottom: 0; background: var(--paper); border-top: 1px solid var(--line);
+  }
+  .bar-row { width: min(980px, 100%); margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 10px 28px; }
+  .bar button {
+    width: 40px; height: 40px; border: 1px solid var(--line); background: transparent; font-size: 18px;
+  }
+  .count { font-variant-numeric: tabular-nums; font-size: 14px; color: var(--muted); min-width: 4.5rem; }
+  .track { flex: 1; height: 3px; background: var(--line); }
+  .track > div { height: 100%; background: var(--navy); }
+  .notes {
+    width: min(980px, 100%); margin: 0 auto; padding: 0 28px 16px; display: none;
+  }
+  .notes.open { display: block; }
+  .cue { margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .05em; color: var(--navy); }
+  .notes p.body { margin: 6px 0 0; font-size: 15px; max-width: 48rem; }
+  .hint { margin-left: auto; font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="app">
+  <main id="stage"></main>
+  <footer class="bar">
+    <div class="notes" id="notes">
+      <p class="cue" id="cue"></p>
+      <p class="body" id="note"></p>
+    </div>
+    <div class="bar-row">
+      <button type="button" id="prev" aria-label="Previous">‹</button>
+      <button type="button" id="next" aria-label="Next">›</button>
+      <span class="count" id="count"></span>
+      <div class="track"><div id="fill"></div></div>
+      <span class="hint">Arrows · N notes · 1–6</span>
+    </div>
+  </footer>
+</div>
+<script src="room/meta.js"></script>
+<script src="room/p0.js"></script>
+<script src="room/p1.js"></script>
+<script src="room/p2.js"></script>
+<script src="room/p3.js"></script>
+<script src="room/p4.js"></script>
+
+<script>
+const DATA = window.ROOM;
+const LEVELS = ["#8d3b32","#a86b45","#8a8175","#3d7a5c","#1f6b45"];
+const STORY = [
+  { name: "Memphis-Shelby County Schools", short: "Memphis", dx: -8, dy: -14, anchor: "end" },
+  { name: "Davidson County", short: "Nashville", dx: 8, dy: -14, anchor: "start" },
+  { name: "Williamson County", short: "Williamson", dx: -10, dy: -14, anchor: "end" },
+  { name: "Germantown", short: "Germantown", dx: -10, dy: 16, anchor: "end" },
+  { name: "Collierville", short: "Collierville", dx: -8, dy: 4, anchor: "end" }
+];
+const CORE = ["ELA","Math","Science","Social Studies"];
+const EOC = ["English I","English II","Algebra I","Geometry","Biology I","US History"];
+const NOTES = [
+  ["0:00–0:40", "Thank you. You asked how Tennessee students are doing. The public data gives two answers, and both are true. I will spend about ten minutes on the difference, using the public TVAAS scatterplots for 2024–25 and the TCAP files through this past spring. One limit up front: 2025–26 growth is still under embargo on the public site. Growth in this briefing is last year. Proficiency includes this year."],
+  ["0:40–2:00", "Achievement is the TCAP result: met or exceeded expectations. It says whether a student is where the standard says they should be that day. Growth is TVAAS. It asks whether these students moved farther, about the same, or less than other Tennessee students who had similar scores before. Zero on the growth measure is not zero learning. Zero means they learned about what similar students statewide learned. If the whole state is improving, zero means you improved with it. Level 5 means we are confident the district beat that expectation. Level 1 is the mirror. Level 3 is consistent with the expectation. The level is a confidence statement, not the size of the gap. Only if asked: the level uses the index, the growth measure divided by its standard error. At or above plus two is Level 5. At or below minus two is Level 1. A large district can be Level 1 on a modest shortfall because the estimate is precise. The distance from the line is the size of the difference."],
+  ["2:00–3:20", "On achievement, the direction is clear. In grades 3 through 8, the share meeting or exceeding expectations rose from 35.1 percent to 40.6 percent in reading between 2022 and 2026, and from 34.1 percent to 43.0 percent in math. Science rose from 39.3 to 46.1 through 2025. I am not extending that line into 2026. The department called science a standard-setting year, so the 46.9 in the file stays off the chart. Social studies, grades 6 through 8 only, rose from 43.5 to 51.4. Even after those gains, most students in reading and math are not proficient. The shape under the average, same year, not the same children: fourth-grade reading is 47.4 percent. Eighth grade is 32.3, up 2.7 points from 29.6, and still the low point. Third-grade reading rose 3.2 points. Fourth-grade reading was flat. Students with disabilities did not share the reading gain: 9.8 percent in 2025, 9.6 in 2026, against 40.6 for all students. If asked about high school: Geometry rose 5.5 points, English II 3.8, Algebra I 2.9, English I fell 1.9. Black students’ reading rose from 24.4 to 25.9. White students rose from 46.6 to 48.8. The gap did not close. These files show the gains. They do not identify which investment produced them."],
+  ["3:20–6:20", "This is the only map. Each dot is a district. Left to right is percent proficient. Bottom to top is the growth measure. The dashed line is the state rate, 38.7 percent on this test. The horizontal line is expected growth. The five districts are already labeled. Start with the dot labeled 1. That is Memphis, the large dot in the upper left: 17.3 percent proficient, growth plus 1.80, index 13.08, Level 5, 7,361 students. Nashville is 2, just to its right and at the same height: 26.8 percent, growth plus 1.80, index 10.57, Level 5, 5,020 students. Williamson is 3, far to the right and just under the line: 71.6 percent proficient, growth minus 0.40, index minus 1.66, Level 2, 3,058 students. Not above the line. Germantown is 4, lower right: 72.0 percent, growth minus 4.90, index minus 8.89, Level 1, 459 students. Collierville is 5, also below the line: 67.1 percent, growth minus 2.10, index minus 4.75, Level 1, 732 students, even though the district overall has been Level 5 for four years. One cell is not a district. Do not make the municipal systems the story. Upper left is below the state rate and ahead of similar peers. That is not on grade level. Upper right is high proficiency and still ahead. Lower right is high proficiency and less growth than similar peers. Lower left is below the state rate and behind similar peers. Do not explain that corner away with poverty. The model already compared students with similar prior scores. If he says a little bit of growth is not proficiency: agree that families live with the percent, then point at dot 1. An index of 13 on 7,361 students is not a little bit of growth. It is also not grade level. If you switch tests, the labels follow. Say a correlation only if asked: about 0.15 on this chart, about 0.04 in sixth-grade reading, about 0.75 in sixth-grade social studies. Do not compare a growth measure of plus one across subjects. The scales differ. The level is the comparable statement. Grade 3 growth is not statewide, so it is not on this chart."],
+  ["6:20–8:10", "The same overall Level 5, four years running, covers three different places. Grades 3 through 8 reading, 2025: Williamson 68.0 percent, Davidson 31.2, Memphis-Shelby 23.7. The state rate that year is 38.9 percent. Together Memphis and Davidson enroll 77,738 of those reading students, about 18 percent of the state. Inside the label, subjects disagree. Memphis is Level 5 in literacy, numeracy, and science, and Level 2 in social studies. Davidson is Level 5 in literacy and Level 3 in numeracy — at the standard, not ahead of it. Oak Ridge is overall Level 5, reading is 46.4 percent, and its literacy composite is Level 1. Count districts and 2025 looks split: 55 overall Level 1, about 38 percent, and 46 overall Level 5, about 32 percent. Only 25 are Level 3. Count students, weighted by grades 4 through 8 reading enrollment: 62 percent are in a Level 5 district and 20 percent are in a Level 1 district. Madison, Sevier, and Maury are the other problem. They are large enough to matter, below the state rate, and below expected growth. That is not Memphis and Nashville. For students, the share in a numeracy Level 1 district fell from 41 percent to 15. Literacy fell from 38 percent to 13, with a bounce to 27 percent in 2024 before the drop. Level 5 literacy is still 27 districts and about 47 percent of students. The rating did not spread. The large systems stayed in it. Schools at overall Level 1 fell from 519 in 2022 to 462 in 2025. Level 5 stayed near 540. The share of schools at Level 3 or better moved from 61 percent to 64. Eighteen districts have held overall Level 5 for four years. I will not read the list. One of them is the state charter commission: that row is the state authorizer’s portfolio, not every charter in Tennessee. Many charters sit inside Memphis and Nashville’s numbers. Maryville, only if asked: fourth-grade reading is Level 1, the literacy composite is Level 3, and the district overall has been Level 5 for four years."],
+  ["8:10–10:00", "Three uses, then stop. First, do not treat low proficiency as one problem, and do not judge current effort by proficiency alone. Memphis and Nashville are the question of whether this growth shows up in proficiency over the next two report cards. Madison, Sevier, and Maury are the question of why students are behind similar peers, not only behind the standard. Second, do not read Level 5 as finished, or as every subject. Families live with proficiency. Memphis social studies is Level 2. Oak Ridge literacy is Level 1. Both districts are overall Level 5. Third, keep the subjects separate. In reading, last year’s proficiency tells you almost nothing about who grew. In social studies, the districts already ahead also tend to grow faster, which is how a gap widens during the year. Say the correlations only if asked: grade 6 reading 0.04, grade 7 math 0.15, grade 8 math 0.47, grade 5 science 0.61, grade 6 social studies 0.75. Do not write one statewide response for those two patterns. The only order from this chart is the next two report cards, subject by subject, the week 2025–26 growth goes public. Those files are on the restricted site and not public yet. You can walk the scatter to any district in the room."]
+];
+
+const slides = [];
+function el(html){ const d=document.createElement("div"); d.innerHTML=html; return d; }
+
+slides.push(el(`<div class="title">
+  <p class="kicker">General Assembly briefing · ten minutes</p>
+  <h1>Two answers to how Tennessee students are doing</h1>
+  <p class="lede">Achievement says where they are. Growth says who moved them. The state publishes both. They do not rank districts in the same order.</p>
+  <p class="embargo">Growth is the 2024–25 public TVAAS release. Proficiency runs through spring 2026. The 2025–26 growth files are still under public embargo.</p>
+</div>`));
+
+slides.push(el(`<div>
+  <p class="kicker">How to hear the two numbers</p>
+  <h2>Proficiency and growth are different questions.</h2>
+  <div class="grid2">
+    <article class="card sand"><h3 class="serif">Achievement</h3><p>Where they are. The share who met or exceeded the TCAP standard, on one day.</p></article>
+    <article class="card"><h3 class="serif">Growth</h3><p>Who moved them. Progress against students with similar scores before. Zero is expected growth, not zero learning.</p></article>
+  </div>
+  <p class="sentence">Level 5 is clearly above that expectation. Level 1 is clearly below. Level 3 is about what was expected.</p>
+</div>`));
+
+function achievement(){
+  const wrap = el(`<div>
+    <p class="kicker">Grades 3–8 · met or exceeded · all students</p>
+    <h2>Reading and math are up. Most students are still not proficient.</h2>
+    <svg class="chart" viewBox="0 0 640 200" role="img" aria-label="Reading and math proficiency, 2022 to 2026"></svg>
+    <ul class="legend"><li class="r">Reading 35.1 → 40.6</li><li class="m">Math 34.1 → 43.0</li></ul>
+    <div class="facts grid3">
+      <div class="fact"><div class="num">47%</div><span>Grade 4 reading</span></div>
+      <div class="fact"><div class="num">32%</div><span>Grade 8 reading</span></div>
+      <div class="fact"><div class="num">10%</div><span>Students with disabilities, reading</span></div>
+    </div>
+    <p class="caption">The 10 percent is about: 9.6 in 2026, against 40.6 for all students. Grade 4 and grade 8 are the same spring, not the same students. Science and social studies rose too. 2026 science is a standard-setting year, so it is not on this chart.</p>
+  </div>`);
+  const svg = wrap.querySelector("svg");
+  const W=640,H=200,L=36,R=12,T=16,B=28;
+  const years=DATA.ach;
+  const x=i=>L+(i/(years.length-1))*(W-L-R);
+  const y=v=>T+(1-v/70)*(H-T-B);
+  const ns="http://www.w3.org/2000/svg";
+  function node(name, attrs){ const n=document.createElementNS(ns,name); for(const k in attrs) n.setAttribute(k, attrs[k]); return n; }
+  for (const g of [0,35,70]) {
+    svg.appendChild(node("line",{x1:L,x2:W-R,y1:y(g),y2:y(g),stroke:"#ddd4c6"}));
+    const t=node("text",{x:L-8,y:y(g)+4,"text-anchor":"end",fill:"#5c564c","font-size":"11"});
+    t.textContent=g; svg.appendChild(t);
+  }
+  function line(key, color){
+    const p=node("polyline",{fill:"none",stroke:color,"stroke-width":"2.5",points:years.map((r,i)=>`${x(i)},${y(r[key])}`).join(" ")});
+    svg.appendChild(p);
+    years.forEach((r,i)=>{
+      svg.appendChild(node("circle",{cx:x(i),cy:y(r[key]),r:3.5,fill:color}));
+    });
+  }
+  line("r","#1b3a4b"); line("m","#1f6b45");
+  years.forEach((r,i)=>{
+    const t=node("text",{x:x(i),y:H-8,"text-anchor":"middle",fill:"#5c564c","font-size":"12"});
+    t.textContent=r.y; svg.appendChild(t);
+  });
+  return wrap;
+}
+slides.push(achievement());
+
+slides.push(el(`<div>
+  <p class="kicker">Districts · 2024–25 · seventh-grade math</p>
+  <h2>Start with the dot labeled 1. That is Memphis.</h2>
+  <div id="scatter"></div>
+</div>`));
+
+slides.push(el(`<div>
+  <p class="kicker">Overall Level 5 for four years · grades 3–8 reading, 2025</p>
+  <h2>The same growth rating. Three different places.</h2>
+  <div class="places grid3">
+    <div class="place"><div class="num lg">68%</div><span>Williamson</span></div>
+    <div class="place"><div class="num lg">31%</div><span>Nashville</span></div>
+    <div class="place"><div class="num lg">24%</div><span>Memphis</span></div>
+  </div>
+  <p class="caption">State rate that year, 38.9%.</p>
+  <div class="split grid2">
+    <p>55 districts are Level 1. 46 are Level 5.</p>
+    <p>Count students instead. Of grades 4–8 reading students, 62% are in a Level 5 district and 20% are in a Level 1 district.</p>
+  </div>
+</div>`));
+
+slides.push(el(`<div>
+  <p class="kicker">What this is for</p>
+  <h2>Three uses. Then stop.</h2>
+  <ol class="uses">
+    <li><span class="n">1</span><p><strong>Low proficiency is not one problem.</strong> <span class="muted">Memphis and Nashville are below the state rate and above expected growth. Madison, Sevier, and Maury are below both.</span></p></li>
+    <li><span class="n">2</span><p><strong>Level 5 is not finished, and not every subject.</strong> <span class="muted">Families live with proficiency. Come back for the next two report cards, subject by subject.</span></p></li>
+    <li><span class="n">3</span><p><strong>Keep the subjects separate.</strong> <span class="muted">Reading and social studies are not the same pattern. Do not write one statewide answer for both.</span></p></li>
+  </ol>
+  <p class="embargo">This is not this year’s growth. The 2025–26 TVAAS files are still under public embargo.</p>
+</div>`));
+
+const stage=document.getElementById("stage");
+let index=0, notesOn=false;
+let subject="Math", grade="7", pinned="Memphis-Shelby County Schools", query="";
+
+function storyOf(name){ const i=STORY.findIndex(s=>s.name===name); return i<0?null:{...STORY[i], n:i+1}; }
+function corner(p, state){
+  const highA = state!=null && p.ach>=state, highG=p.gm>=0;
+  if(!highA && highG) return "Upper left";
+  if(highA && highG) return "Upper right";
+  if(highA && !highG) return "Lower right";
+  return "Lower left";
+}
+function beside(p, state){
+  const left = state==null || p.ach<state;
+  return (left?"left of the dashed state line":"right of the dashed state line")+", "+(p.gm>=0?"above the horizontal line":"under the horizontal line");
+}
+function signed(n,d){ return (n>0?"+":"")+n.toFixed(d); }
+function displayName(name){
+  if(name==="Davidson County") return "Davidson County (Metro Nashville)";
+  if(name==="Tennessee Public Charter School Commission") return "State charter commission";
+  if(name==="Memphis-Shelby County Schools") return "Memphis-Shelby";
+  return name;
+}
+function pointsFor(sub, gr){
+  const si=DATA.subjects.indexOf(sub);
+  return DATA.points.filter(p=>p[1]===si && p[2]===gr).map(p=>({
+    name: DATA.names[p[0]], gm:p[3], index:p[4], level:p[5], n:p[6], ach:p[7]
+  }));
+}
+function gradesFor(sub){
+  const si=DATA.subjects.indexOf(sub);
+  const set=new Set(DATA.points.filter(p=>p[1]===si).map(p=>p[2]));
+  return [...set].sort((a,b)=> a==="EOC"?1:b==="EOC"?-1:Number(a)-Number(b));
+}
+
+function drawScatter(root){
+  const grades=gradesFor(subject);
+  const g=grades.includes(grade)?grade:(grades[0]||"EOC");
+  grade=g;
+  const state=DATA.series[subject+"|"+g];
+  const pts=pointsFor(subject, g);
+  const needle=query.trim().toLowerCase();
+  const onScript=subject==="Math" && g==="7";
+  root.innerHTML="";
+  const controls=document.createElement("div");
+  controls.className="row";
+  controls.style.marginTop="14px";
+  CORE.forEach(s=>{
+    const b=document.createElement("button");
+    b.type="button"; b.textContent=s==="ELA"?"Reading":s;
+    if(s===subject) b.className="on";
+    b.onclick=()=>{ subject=s; const ng=gradesFor(s); if(!ng.includes(grade)) grade=ng.includes("7")?"7":(ng[0]||"EOC"); drawScatter(root); };
+    controls.appendChild(b);
+  });
+  const sel=document.createElement("select");
+  const opt0=document.createElement("option"); opt0.value=""; opt0.textContent="End-of-course"; sel.appendChild(opt0);
+  EOC.forEach(s=>{ const o=document.createElement("option"); o.value=s; o.textContent=s; sel.appendChild(o); });
+  sel.value=EOC.includes(subject)?subject:"";
+  sel.onchange=()=>{ if(sel.value){ subject=sel.value; const ng=gradesFor(subject); if(!ng.includes(grade)) grade=ng[0]||"EOC"; drawScatter(root);} };
+  controls.appendChild(sel);
+  const finder=document.createElement("input");
+  finder.placeholder="Find a district"; finder.value=query; finder.className="spacer";
+  finder.setAttribute("aria-label","Find a district");
+  finder.oninput=()=>{ query=finder.value; drawScatter(root); finder.focus(); };
+  controls.appendChild(finder);
+  root.appendChild(controls);
+
+  if(g!=="EOC"){
+    const grow=document.createElement("div"); grow.className="row"; grow.style.marginTop="6px";
+    grades.forEach(gg=>{
+      const b=document.createElement("button"); b.type="button"; b.textContent="Grade "+gg;
+      if(gg===g) b.className="on";
+      b.onclick=()=>{ grade=gg; drawScatter(root); };
+      grow.appendChild(b);
+    });
+    root.appendChild(grow);
+  }
+
+  const chips=document.createElement("div"); chips.className="row"; chips.style.marginTop="6px";
+  STORY.forEach((s,i)=>{
+    const hit=pts.find(p=>p.name===s.name); if(!hit) return;
+    const b=document.createElement("button"); b.type="button";
+    b.innerHTML=`<span class="serif">${i+1}</span> ${s.short} <span class="muted">· ${corner(hit, state)}</span>`;
+    if(pinned===s.name) b.className="on";
+    b.onclick=()=>{ pinned=s.name; query=""; drawScatter(root); };
+    chips.appendChild(b);
+  });
+  root.appendChild(chips);
+
+  const pin=pts.find(p=>p.name===pinned);
+  if(pin){
+    const st=storyOf(pin.name);
+    const who=st?`${st.n} ${st.short}`:displayName(pin.name);
+    const kind=pin.name==="Memphis-Shelby County Schools"?"The large labeled dot, ": (st?"The labeled dot, ":"The dot, ");
+    const extra=onScript && pin.name==="Williamson County"?" Not above the line.":"";
+    const c=document.createElement("p"); c.className="callout";
+    c.innerHTML=`<strong>Point at ${who}.</strong> ${corner(pin, state)}. ${kind}${beside(pin, state)}. ${pin.ach.toFixed(1)}% proficient · growth ${signed(pin.gm,2)} · index ${pin.index==null?"—":pin.index.toFixed(1)} · Level ${pin.level} · ${pin.n.toLocaleString()} students.${extra}`;
+    root.appendChild(c);
+  }
+
+  const ys=pts.map(p=>p.gm);
+  const yMin=(ys.length?Math.min(0,...ys): -5)-0.8;
+  const yMax=(ys.length?Math.max(0,...ys): 5)+0.8;
+  const W=860,H=340,L=44,R=16,T=26,B=28;
+  const X=v=>L+(v/100)*(W-L-R);
+  const Y=v=>T+(1-(v-yMin)/(yMax-yMin))*(H-T-B);
+  const ns="http://www.w3.org/2000/svg";
+  function node(name, attrs){ const n=document.createElementNS(ns,name); for(const k in attrs) n.setAttribute(k, attrs[k]); return n; }
+  const svg=node("svg",{viewBox:`0 0 ${W} ${H}`, class:"chart", role:"img"});
+  svg.appendChild(node("rect",{x:L,y:T,width:W-L-R,height:H-T-B,fill:"none"}));
+  for(let t=Math.ceil(yMin/2)*2; t<=yMax; t+=2){
+    svg.appendChild(node("line",{x1:L,x2:W-R,y1:Y(t),y2:Y(t),stroke:"#ddd4c6"}));
+    const tx=node("text",{x:L-8,y:Y(t)+4,"text-anchor":"end",fill:"#5c564c","font-size":"12"});
+    tx.textContent=t; svg.appendChild(tx);
+  }
+  [0,20,40,60,80,100].forEach(t=>{
+    svg.appendChild(node("line",{x1:X(t),x2:X(t),y1:T,y2:H-B,stroke:"#eee9df"}));
+    const tx=node("text",{x:X(t),y:H-8,"text-anchor":"middle",fill:"#5c564c","font-size":"12"});
+    tx.textContent=t; svg.appendChild(tx);
+  });
+  if(state!=null){
+    svg.appendChild(node("line",{x1:X(state),x2:X(state),y1:T,y2:H-B,stroke:"#1b3a4b","stroke-dasharray":"4 3"}));
+  }
+  svg.appendChild(node("line",{x1:L,x2:W-R,y1:Y(0),y2:Y(0),stroke:"#1c1915"}));
+  const zs = pts.map(p => Math.max(p.n, 80));
+  const zmin = Math.min(...zs), zmax = Math.max(...zs);
+  function radius(n){
+    const z = zmax===zmin ? 200 : 50 + (370 * (Math.max(n,80) - zmin) / (zmax - zmin));
+    return Math.max(3.5, Math.sqrt(z/Math.PI));
+  }
+  const ordered=[...pts].sort((a,b)=> (storyOf(a.name)?1:0)-(storyOf(b.name)?1:0));
+  ordered.forEach(p=>{
+    const dim=needle.length>1 && !p.name.toLowerCase().includes(needle);
+    const r=radius(p.n);
+    const c=node("circle",{cx:X(p.ach),cy:Y(p.gm),r,fill:LEVELS[p.level-1]||"#8a8175","fill-opacity":dim?0.12:0.9});
+    c.style.cursor="pointer";
+    c.addEventListener("click",()=>{ pinned = pinned===p.name ? null : p.name; query=""; drawScatter(root); });
+    const title=node("title",{}); title.textContent=`${displayName(p.name)} · ${p.ach.toFixed(1)}% · growth ${signed(p.gm,2)} · Level ${p.level}`;
+    c.appendChild(title);
+    const st=storyOf(p.name);
+    if(st && !dim){
+      const ring=node("circle",{cx:X(p.ach),cy:Y(p.gm),r:r+(pinned===p.name?5:3),fill:"none",stroke:"#1c1915","stroke-width":pinned===p.name?2:1});
+      svg.appendChild(ring);
+    }
+    svg.appendChild(c);
+    if(st && !dim){
+      const tx=node("text",{
+        x:X(p.ach)+st.dx, y:Y(p.gm)+st.dy, "text-anchor":st.anchor,
+        fill:"#1c1915", stroke:"#f3efe4", "stroke-width":"4", "paint-order":"stroke",
+        "font-size":"13", "font-weight":"600"
+      });
+      tx.textContent=`${st.n} ${st.short}`;
+      svg.appendChild(tx);
+    }
+  });
+  const wrap=document.createElement("div"); wrap.className="plotwrap"; wrap.appendChild(svg); root.appendChild(wrap);
+  const foot=document.createElement("p"); foot.className="footkey";
+  foot.innerHTML=LEVELS.map((c,i)=>`<span class="swatch" style="background:${c}"></span>Level ${i+1}`).join(" &nbsp; ");
+  foot.innerHTML+=`<br>Dashed line is the state rate${state!=null?` (${state.toFixed(1)}%)`:""}. Horizontal line is expected growth. Size is students tested. The numbered dots are the districts in the notes.`;
+  root.appendChild(foot);
+  const kicker=document.querySelector("#stage .kicker");
+  if(kicker){
+    const label=subject==="ELA"?"reading":subject;
+    kicker.textContent = g==="EOC" ? `Districts · 2024–25 · ${subject}` : `Districts · 2024–25 · grade ${g} ${label.toLowerCase()}`;
+  }
+}
+
+function render(){
+  stage.replaceChildren(slides[index]);
+  if(index===3) drawScatter(stage.querySelector("#scatter"));
+  document.getElementById("cue").textContent=NOTES[index][0];
+  document.getElementById("note").textContent=NOTES[index][1];
+  document.getElementById("notes").classList.toggle("open", notesOn);
+  document.getElementById("count").textContent=`${index+1} of ${slides.length}`;
+  document.getElementById("fill").style.width=`${((index+1)/slides.length)*100}%`;
+  document.getElementById("prev").disabled=index===0;
+  document.getElementById("next").disabled=index===slides.length-1;
+}
+document.getElementById("prev").onclick=()=>{ if(index>0){index--; render();} };
+document.getElementById("next").onclick=()=>{ if(index<slides.length-1){index++; render();} };
+addEventListener("keydown", (e)=>{
+  const tag=(e.target.tagName||"");
+  if(tag==="INPUT" || tag==="SELECT" || tag==="TEXTAREA"){
+    if(e.key==="Escape") e.target.blur();
+    return;
+  }
+  if(e.key==="ArrowRight" || e.key===" "){ e.preventDefault(); if(index<slides.length-1){index++; render();} }
+  else if(e.key==="ArrowLeft"){ if(index>0){index--; render();} }
+  else if(e.key==="n" || e.key==="N"){ notesOn=!notesOn; render(); }
+  else if(e.key>="1" && e.key<="9"){ const n=+e.key-1; if(n<slides.length){ index=n; render(); } }
+});
+render();
+</script>
+</body>
+</html>
