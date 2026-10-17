@@ -3,8 +3,48 @@
 <head>
 <meta charset="utf-8">
 <title>Tennessee growth and achievement</title>
+<style>
+body{font-family:Georgia,serif;background:#f3efe4;color:#1c1915;max-width:40rem;margin:3rem auto;padding:0 1rem}
+p,button{font-family:Calibri,sans-serif}
+button{margin-top:1.5rem;background:#1b3a4b;color:#f3efe4;border:0;padding:.8rem 1.2rem;font-size:1rem;cursor:pointer}
+.muted{color:#5c564c}
+</style>
 </head>
 <body>
-<p>placeholder</p>
+<h1>Tennessee growth and achievement</h1>
+<p class="muted">Ten-minute briefing for a legislator. Speaker notes are inside the PowerPoint, under each slide. Open the file in PowerPoint or Google Slides and use View, Notes.</p>
+<p><button id="dl" type="button">Download the PowerPoint</button></p>
+<p id="status" class="muted">Ready.</p>
+<script>
+const N = 24;
+document.getElementById("dl").onclick = async function () {
+  const status = document.getElementById("status");
+  const btn = document.getElementById("dl");
+  btn.disabled = true;
+  let b64 = "";
+  try {
+    for (let i = 0; i < N; i++) {
+      const name = "p" + String(i).padStart(2, "0") + ".txt";
+      status.textContent = "Fetching part " + (i + 1) + " of " + N + "...";
+      const res = await fetch("briefing/" + name + "?v=1");
+      if (!res.ok) throw new Error(name + " " + res.status);
+      b64 += (await res.text()).trim();
+    }
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const blob = new Blob([bytes], {type: "application/vnd.openxmlformats-officedocument.presentationml.presentation"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "Tennessee-growth-and-achievement.pptx";
+    document.body.appendChild(a);
+    a.click();
+    status.textContent = "Download started. Open Tennessee-growth-and-achievement.pptx.";
+  } catch (err) {
+    status.textContent = "Could not build the file yet: " + err.message + ". Wait a minute and try again.";
+  }
+  btn.disabled = false;
+};
+</script>
 </body>
 </html>
